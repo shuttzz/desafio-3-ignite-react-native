@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { SearchBar } from '../../components/SearchBar';
@@ -11,6 +10,7 @@ import {
   EmptyListContainer,
   EmptyListMessage
 } from './styles';
+import {useStorageData} from "../../hooks/useStorageData";
 
 interface LoginDataProps {
   id: string;
@@ -25,10 +25,10 @@ export function Home() {
   const [searchListData, setSearchListData] = useState<LoginListDataProps>([]);
   const [data, setData] = useState<LoginListDataProps>([]);
 
-  const keyStorage = '@passmanager:logins';
+  const { getItem } = useStorageData();
 
   async function loadData() {
-    const response = await AsyncStorage.getItem(keyStorage);
+    const response = await getItem();
 
     if (!response) {
       return;
